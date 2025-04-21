@@ -53,23 +53,18 @@ if page == "Home":
     # User input
     user_input = st.text_input("Your Question", placeholder="e.g. What courses do you offer?")
 
-    # Button to send the query
+
     if st.button("Ask"):
      if user_input:
-        # Get the chatbot response
         response = chatbot_response(user_input)
-        
-        # Display the response in bold black
+
         st.markdown(f"<div style='color: black; font-weight: bold;'>{response}</div>", unsafe_allow_html=True)
-        
-        # Add a copy button
         if st.button("Copy Response"):
             st.session_state["copied_text"] = response
             st.success("Response copied to clipboard!")
     else:
         st.warning("Please enter a question.")
 
-# About Page
 elif page == "About":
     st.title("About Aadarsh Coaching Center")
     st.markdown("""
@@ -106,54 +101,31 @@ elif page == "About":
     import streamlit as st
 
 def main():
-    # Main app title
+    
     st.title("AI Question Paper Generator")
     st.write("Generate customized question papers for your students using AI")
-    
-    # Sidebar for prompt generation
     st.sidebar.title("Question Paper Settings")
-    
-    # Language selection
     language = st.sidebar.radio("Select Language:", ["English", "Hindi"])
-    
-    # Class selection
     class_level = st.sidebar.selectbox("Select Class:", 
                                       ["Class 6", "Class 7", "Class 8", "Class 9", "Class 10", 
                                        "Class 11", "Class 12", "Undergraduate", "Postgraduate"])
-    
-    # Subject selection based on class
     subjects = get_subjects_for_class(class_level)
     subject = st.sidebar.selectbox("Select Subject:", subjects)
-    
-    # Topic input
     topic = st.sidebar.text_input("Enter Specific Topic (Optional):", "")
-    
-    # Question type
     question_type = st.sidebar.multiselect("Select Question Type(s):", 
                                           ["Objective (MCQ)", "Short Answer", "Long Answer", "Fill in the Blanks", 
                                            "True/False", "Match the Following", "Diagram Based"])
-    
-    # Number of questions for each selected type
     question_counts = {}
     for q_type in question_type:
         question_counts[q_type] = st.sidebar.number_input(f"Number of {q_type} questions:", 
                                                          min_value=1, max_value=50, value=5)
-    
-    # Difficulty level
     difficulty = st.sidebar.select_slider("Difficulty Level:", 
                                          options=["Easy", "Moderate", "Difficult", "Mixed"])
-    
-    # Time limit
     time_limit = st.sidebar.slider("Time Limit (minutes):", 
                                   min_value=15, max_value=180, value=60, step=15)
-    
-    # Total marks
     total_marks = st.sidebar.number_input("Total Marks:", min_value=10, max_value=100, value=50)
-    
-    # Additional instructions
     additional_instructions = st.sidebar.text_area("Additional Instructions (Optional):", "")
     
-    # Generate prompt button
     if st.sidebar.button("Generate Prompt"):
         prompt = generate_prompt(language, class_level, subject, topic, question_type, 
                                question_counts, difficulty, time_limit, total_marks, 
@@ -166,7 +138,6 @@ def main():
         # Copy button
         st.button("Copy to Clipboard", on_click=lambda: st.write("Prompt copied to clipboard!"))
         
-    # Display sample prompts
     with st.expander("View Sample Prompts"):
         display_sample_prompts(language)
 
@@ -195,15 +166,11 @@ def generate_prompt(language, class_level, subject, topic, question_types,
         prompt = f"Create a {difficulty.lower()} level question paper for {class_level} {subject}"
     else:  # Hindi
         prompt = f"{class_level} के लिए {subject} का {get_hindi_difficulty(difficulty)} स्तर का प्रश्न पत्र बनाएं"
-    
-    # Add topic if specified
     if topic:
         if language == "English":
             prompt += f" on the topic of '{topic}'"
         else:
             prompt += f" विषय '{topic}' पर"
-    
-    # Add question types and counts
     if language == "English":
         prompt += ". Include the following types of questions:\n"
     else:
@@ -215,21 +182,15 @@ def generate_prompt(language, class_level, subject, topic, question_types,
             prompt += f"- {count} {q_type} questions\n"
         else:
             prompt += f"- {count} {get_hindi_question_type(q_type)}\n"
-    
-    # Add time limit and marks
     if language == "English":
         prompt += f"\nThe question paper should be designed for {time_limit} minutes and for a total of {total_marks} marks."
     else:
         prompt += f"\nप्रश्न पत्र {time_limit} मिनट के लिए और कुल {total_marks} अंकों के लिए डिज़ाइन किया जाना चाहिए।"
-    
-    # Add additional instructions if any
     if additional_instructions:
         if language == "English":
             prompt += f"\n\nAdditional instructions: {additional_instructions}"
         else:
             prompt += f"\n\nअतिरिक्त निर्देश: {additional_instructions}"
-    
-    # Final formatting instructions
     if language == "English":
         prompt += "\n\nPlease format the question paper properly with sections, question numbers, and marks distribution. Include clear instructions for students at the beginning."
     else:
