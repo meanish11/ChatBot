@@ -1,0 +1,20 @@
+
+  version: '3.8'
+  services:
+    render:
+      image: ghcr.io/andrewevans/render:latest
+      container_name: render
+      restart: unless-stopped
+      ports:
+        - 8000:8000
+      environment:
+        - RENDER_API_KEY=${RENDER_API_KEY}
+        - RENDER_SERVICE_ID=${RENDER_SERVICE_ID}
+        - RENDER_SERVICE_NAME=${RENDER_SERVICE_NAME}
+        - RENDER_SERVICE_URL=${RENDER_SERVICE_URL}
+        - RENDER_SERVICE_REGION=${RENDER_SERVICE_REGION}
+        - RENDER_SERVICE_TYPE=${RENDER_SERVICE_TYPE}
+        - RENDER_SERVICE_INSTANCE_ID=${RENDER_SERVICE_INSTANCE_ID}
+        - RENDER_SERVICE_INSTANCE_NAME=${RENDER_SERVICE_INSTANCE_NAME}
+        - RENDER_SERVICE_INSTANCE_URL=${RENDER_SERVICE_INSTANCE_URL}
+        
