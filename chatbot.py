@@ -44,11 +44,11 @@ if page == "Home":
     """)
     
     
-    st.markdown("### Get Assistance from Our AI Chatbot")
-    st.markdown("Ask any questions related to our coaching services, courses, or general queries!")
+    st.markdown("### Make a Question Paper for the Test")
+    st.markdown("Generate customized question papers for your students using AI.")
+  
 
-    st.markdown("### Chat with our AI Chatbot")
-    st.markdown("Ask anything related to our coaching services, courses, or general queries!")
+   
 
     # User input
     user_input = st.text_input("Your Question", placeholder="e.g. What courses do you offer?")
